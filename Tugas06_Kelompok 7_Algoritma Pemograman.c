@@ -1,40 +1,37 @@
 #include <stdio.h>
-                         
-double fungsi(double x) {
-    return x * x;
+#include <math.h>
+
+double f(double x) {
+    return 4 * x * x + 7 * x - 5;
 }
 
-
-int integraltrapezoid(double a, double b, int n) {
-    double h = (b - a) / n;
-    double integral = (fungsi(a) + fungsi(b)) / 2.0;
-
-    for (int i = 1; i < n; i++) {
-        integral += fungsi(a + i * h);
+double trapezoid(double a, double b, double N) {
+    double h = (b - a) / N;
+    double hasil = 0.5 * (f(a) + f(b));
+    for (double i = 1; i < N; i++) {
+        double x = a + i * h;
+        hasil += f(x);
     }
-
-    return (int)integral* n * h; 
+    return hasil * h;
 }
 
 int main() {
-    double a, b;
-    int n;
+    // Input batas dan jumlah blok trapesium
+    double a = 0.0; // batas bawah
+    double b = 2.0; // batas atas
+    double N;
 
-    printf("Masukkan batas bawah integral: ");
-    scanf("%lf", &a);
-    printf("Masukkan batas atas integral: ");
-    scanf("%lf", &b);
-    printf("Masukkan fungsi : ");
-    scanf("%d", &n);
-    
-    if (n <= 0) {
-        printf("Silahkan coba lagi\n");
-        return 1;
-    }
+    printf("Masukkan nilai N (jumlah blok)\t: ");
+    scanf("%lf", &N);
 
-    int integral = integraltrapezoid(a, b, n);
+    // Hitung integral 
+    double integral_analitik = ((1.0 / 3.0) * (4 * pow(b, 3) + 7 * pow(b, 2) - 5 * b) - (1.0 / 3.0) * (4 * pow(a, 3) + 7 * pow(a, 2) - 5 * a));
+    double integral_numerik = trapezoid(a, b, N);
 
-    printf("Hasil integral: %d\n", integral);
+    // Outputkan hasil
+    printf("\nHasil integral dari %lf sampai %lf dengan N = %lf:\n", a, b, N);
+    printf("Metode Analitik: %lf\n", integral_analitik);
+    printf("Metode Numerik (Trapezoid): %lf\n", integral_numerik);
 
     return 0;
 }
